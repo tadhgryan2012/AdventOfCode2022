@@ -45,7 +45,6 @@ public class DayThree {
 
 		for (int i = 0; i < input.size(); i += 3) {
 			String items = getCommonItems(input.get(i), getCommonItems(input.get(i+1), input.get(i+2)));
-			// System.out.printf("%s, %s, %s = %s%n", input.get(i), input.get(i+1), input.get(i+2), items);
 			score += getScore(items);
 		}
 
