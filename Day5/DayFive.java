@@ -67,7 +67,7 @@ public class DayFive {
 	}
 
 	private static String partOne(ArrayList<int[]> input) {
-		LinkedList<String>[] warehouseTemp = new LinkedList[warehouse.length];
+		@SuppressWarnings("unchecked") LinkedList<String>[] warehouseTemp = new LinkedList[warehouse.length];
 		for (int i = 0; i < warehouse.length; i++) {
 			warehouseTemp[i] = new LinkedList<>();
 			for (String element : warehouse[i]) {
@@ -93,7 +93,7 @@ public class DayFive {
 	}
 
 	private static String partTwo(ArrayList<int[]> input) {
-		LinkedList<String>[] warehouseTemp = new LinkedList[warehouse.length];
+		@SuppressWarnings("unchecked") LinkedList<String>[] warehouseTemp = new LinkedList[warehouse.length];
 		for (int i = 0; i < warehouse.length; i++) {
 			warehouseTemp[i] = new LinkedList<>();
 			for (String element : warehouse[i]) {
