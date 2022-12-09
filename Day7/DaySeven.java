@@ -33,7 +33,7 @@ public class DaySeven {
 		ArrayList<Directory> dirs = new ArrayList<>();
 		int score = 0;
 
-		enterDirectory(input, dirs);
+		makeTreeMap(input, dirs);
 
 		for (Directory dir : dirs) {
 			if (dir.getSize() <= 100000) {
@@ -47,7 +47,7 @@ public class DaySeven {
 		int score = 0;
 
 		ArrayList<Directory> dirs = new ArrayList<>();
-		enterDirectory(input, dirs);
+		makeTreeMap(input, dirs);
 
 		int sizeNeededToDelete = 0;
 		for (Directory dir : dirs) {
@@ -67,7 +67,7 @@ public class DaySeven {
 		return score;
 	}
 	
-	private static void enterDirectory(ArrayList<String> input, ArrayList<Directory> dirSizes) {
+	private static void makeTreeMap(ArrayList<String> input, ArrayList<Directory> dirSizes) {
 		Stack<Directory> curPath = new Stack<>();
 		curPath.push(new Directory("/"));
 		for (int i=2; i<input.size(); i++) {
