@@ -5,13 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.LinkedList;
 
 public class DaySeven {
 	public static void main(String[] args) {
 		ArrayList<String> input = getInput();
 		System.out.printf("Part 1: %d%n", partOne(input));
-		System.out.printf("Part 2: %d%n", partTwo(input));
+		// System.out.printf("Part 2: %d%n", partTwo(input));
 	}
 	
 	private static ArrayList<String> getInput() {
@@ -28,66 +28,97 @@ public class DaySeven {
 		}
 		return input;
 	}
-
+	
 	private static int partOne(ArrayList<String> input) {
-		ArrayList<Directory> dirs = new ArrayList<>();
 		int score = 0;
-
-		makeTreeMap(input, dirs);
-
-		for (Directory dir : dirs) {
-			if (dir.getSize() <= 100000) {
-				score += dir.getSize();
+		LinkedList<String> stack = new LinkedList<>();
+		ArrayList<Integer> sizes = new ArrayList<>();
+		
+		for (int i=0; i<input.size(); i++) {
+			String line = input.get(i);
+			if (line.startsWith("$ cd ") && !line.contains("..")) {
+				while (!input.get(i).contains("..")) {
+					stack.push(input.get(i));
+					i++;
+				}
+				String insideLine;
+				int size = 0;
+				while (!(insideLine = stack.pop()).equals("$ cd ")) {
+					if (insideLine.contains("."))
+					size += Integer.parseInt(insideLine.split(" ")[0]);
+				}
+				sizes.add(size);
 			}
 		}
-		return score;
-	}
-
-	private static int partTwo(ArrayList<String> input) {
-		int score = 0;
-
-		ArrayList<Directory> dirs = new ArrayList<>();
-		makeTreeMap(input, dirs);
-
-		int sizeNeededToDelete = 0;
-		for (Directory dir : dirs) {
-			if (dir.getName().equals("/")) {
-				sizeNeededToDelete = dir.getSize() - 40000000;
-				break;
+		for (int size : sizes) {
+			if (size <= 100000) {
+				score += size;
 			}
 		}
-		dirs.sort(null);
-		for (Directory dir : dirs) {
-			if (dir.getSize() >= sizeNeededToDelete) {
-				score = dir.getSize();
-				break;
-			}
-		}
-
 		return score;
 	}
 	
-	private static void makeTreeMap(ArrayList<String> input, ArrayList<Directory> dirSizes) {
-		Stack<Directory> curPath = new Stack<>();
-		curPath.push(new Directory("/"));
-		for (int i=2; i<input.size(); i++) {
-			String line = input.get(i);
-			if (line.startsWith("$ cd ") && !line.substring(5).equals("..")) {
-				curPath.push(curPath.peek().getDirectory(line.substring(5)));
-				i += 1;
-			} else if (line.startsWith("dir ")) {
-				Directory newDir = new Directory(line.substring(4));
-				curPath.peek().addDirectory(newDir);
-			} else if (line.contains("$ cd ..")) {
-				curPath.peek().getSizesOfChildren();
-				dirSizes.add(curPath.peek());
-
-				curPath.pop();
-			} else {
-				try {
-					curPath.peek().setSize(Integer.parseInt(line.split(" ")[0]) + curPath.peek().getSize());
-				} catch (NumberFormatException e) {}
-			}
-		}
-	}
+	
+	// private static int partOne(ArrayList<String> input) {
+		// 	ArrayList<Directory> dirs = new ArrayList<>();
+		// 	int score = 0;
+		
+		// 	makeTreeMap(input, dirs);
+		
+		// 	for (Directory dir : dirs) {
+			// 		if (dir.getSize() <= 100000) {
+				// 			score += dir.getSize();
+				// 		}
+				// 	}
+				// 	return score;
+				// }
+				
+				// private static int partTwo(ArrayList<String> input) {
+					// 	int score = 0;
+					
+					// 	ArrayList<Directory> dirs = new ArrayList<>();
+					// 	makeTreeMap(input, dirs);
+					
+					// 	int sizeNeededToDelete = 0;
+					// 	for (Directory dir : dirs) {
+						// 		if (dir.getName().equals("/")) {
+							// 			sizeNeededToDelete = dir.getSize() - 40000000;
+							// 			break;
+							// 		}
+							// 	}
+							// 	dirs.sort(null);
+							// 	for (Directory dir : dirs) {
+								// 		if (dir.getSize() >= sizeNeededToDelete) {
+									// 			score = dir.getSize();
+									// 			break;
+									// 		}
+									// 	}
+									
+									// 	return score;
+									// }
+									
+									// private static void makeTreeMap(ArrayList<String> input, ArrayList<Directory> dirSizes) {
+										// 	Stack<Directory> curPath = new Stack<>();
+										// 	curPath.push(new Directory("/"));
+										// 	for (int i=2; i<input.size(); i++) {
+											// 		String line = input.get(i);
+											// 		if (line.startsWith("$ cd ") && !line.substring(5).equals("..")) {
+												// 			curPath.push(curPath.peek().getDirectory(line.substring(5)));
+												// 			i += 1;
+												// 		} else if (line.startsWith("dir ")) {
+													// 			Directory newDir = new Directory(line.substring(4));
+													// 			curPath.peek().addDirectory(newDir);
+													// 		} else if (line.contains("$ cd ..")) {
+														// 			curPath.peek().getSizesOfChildren();
+														// 			dirSizes.add(curPath.peek());
+														
+														// 			curPath.pop();
+														// 		} else {
+															// 			try {
+																// 				curPath.peek().setSize(Integer.parseInt(line.split(" ")[0]) + curPath.peek().getSize());
+																// 			} catch (NumberFormatException e) {}
+																// 		}
+																// 	}
+																// }
 }
+															
